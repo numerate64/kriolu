@@ -6,9 +6,21 @@ const dailyWord = document.querySelector('#daily-word');
 const dailyDefinition = document.querySelector('#daily-definition');
 const dailyExtra = document.querySelector('#daily-extra');
 const dailySearch = document.querySelector('#daily-search');
+const themeToggle = document.querySelector('#theme-toggle');
+const themeLabel = document.querySelector('#theme-label');
+const themeColor = document.querySelector('meta[name="theme-color"]');
 const norm = (s) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let entries = [];
+
+function setTheme(theme) {
+  const isDark = theme === 'dark';
+  document.documentElement.dataset.theme = theme;
+  themeLabel.textContent = isDark ? 'Light mode' : 'Dark mode';
+  themeToggle.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+  themeToggle.setAttribute('aria-pressed', String(isDark));
+  themeColor.content = isDark ? '#0f172a' : '#f5f7fb';
+}
 
 function rank(e, needle) {
   const en = norm(e.english), kr = norm(e.kriolu), sn = norm(e.sanpajudu);
@@ -78,6 +90,12 @@ function render() {
 
 clear.addEventListener('click', () => { q.value = ''; q.focus(); render(); });
 q.addEventListener('input', render);
+setTheme(document.documentElement.dataset.theme || 'light');
+themeToggle.addEventListener('click', () => {
+  const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('kriolu-theme', theme);
+  setTheme(theme);
+});
 dailySearch.addEventListener('click', () => {
   q.value = dailySearch.dataset.word || dailyWord.textContent;
   q.focus();

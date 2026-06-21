@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kriolu-app-v1';
+const CACHE_NAME = 'kriolu-app-v2';
 const ASSETS = [
   '/kriolu/',
   '/kriolu/index.html',

@@ -3,11 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0f172a">
+  <meta name="theme-color" content="#f5f7fb">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Kriolu">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>English → Kriolu Dictionary</title>
+  <script>
+    (() => {
+      const savedTheme = localStorage.getItem('kriolu-theme');
+      const theme = savedTheme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+      document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0f172a' : '#f5f7fb';
+    })();
+  </script>
   <link rel="stylesheet" href="/kriolu/styles.css">
   <link rel="manifest" href="/kriolu/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/kriolu/icons/apple-touch-icon.png">
@@ -15,7 +23,19 @@
 <body>
   <main class="wrap">
     <header>
-      <p class="eyebrow">Dictionary</p>
+      <div class="header-row">
+        <p class="eyebrow">Dictionary</p>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode">
+          <svg class="theme-icon theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path>
+          </svg>
+          <svg class="theme-icon theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
+          </svg>
+          <span id="theme-label">Dark mode</span>
+        </button>
+      </div>
       <h1>English ↔ Kriolu</h1>
       <p class="sub">Search English or Kriolu terms across the English-Kriolu dictionary and <em>Disonariu Kabuverdianu</em> reference.</p>
     </header>

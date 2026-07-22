@@ -1,8 +1,8 @@
-const CACHE_NAME = 'kriolu-app-v3';
+const CACHE_NAME = 'kriolu-app-v4';
 const ASSETS = [
   '/kriolu/',
   '/kriolu/index.html',
-  '/kriolu/styles.css?v=20260722',
+  '/kriolu/styles.css?v=20260722b',
   '/kriolu/app.js?v=20260722',
   '/kriolu/dictionary.json',
   '/kriolu/manifest.webmanifest',

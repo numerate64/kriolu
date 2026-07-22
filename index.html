@@ -16,7 +16,7 @@
       document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0f172a' : '#f5f7fb';
     })();
   </script>
-  <link rel="stylesheet" href="/kriolu/styles.css">
+  <link rel="stylesheet" href="/kriolu/styles.css?v=20260722">
   <link rel="manifest" href="/kriolu/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/kriolu/icons/apple-touch-icon.png">
 </head>
@@ -42,6 +42,7 @@
     <section class="daily-widget" aria-labelledby="daily-title">
       <div>
         <p class="eyebrow" id="daily-title">Kriolu word of the day</p>
+        <div class="daily-date" id="daily-date">Today</div>
         <div class="daily-word" id="daily-word">Loading…</div>
         <div class="daily-definition" id="daily-definition">Choosing today's entry from the dictionary.</div>
         <div class="daily-extra" id="daily-extra"></div>
@@ -58,7 +59,7 @@
       <div class="results" id="results"></div>
     </section>
   </main>
-  <script src="/kriolu/app.js"></script>
+  <script src="/kriolu/app.js?v=20260722"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/kriolu/service-worker.js', { scope: '/kriolu/' });

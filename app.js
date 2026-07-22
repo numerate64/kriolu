@@ -3,6 +3,7 @@ const count = document.querySelector('#count');
 const results = document.querySelector('#results');
 const clear = document.querySelector('#clear');
 const dailyWord = document.querySelector('#daily-word');
+const dailyDate = document.querySelector('#daily-date');
 const dailyDefinition = document.querySelector('#daily-definition');
 const dailyExtra = document.querySelector('#daily-extra');
 const dailySearch = document.querySelector('#daily-search');
@@ -12,6 +13,7 @@ const themeColor = document.querySelector('meta[name="theme-color"]');
 const norm = (s) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let entries = [];
+const DAY_MS = 86400000;
 
 function setTheme(theme) {
   const isDark = theme === 'dark';
@@ -32,10 +34,63 @@ function rank(e, needle) {
   return 99;
 }
 
-function dayIndex(size) {
-  const today = new Date();
-  const localMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  return Math.floor(localMidnight.getTime() / 86400000) % size;
+function dateSerial(date = new Date()) {
+  const localMidnight = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  return Math.floor(localMidnight.getTime() / DAY_MS);
+}
+
+function formatDailyDate(date = new Date()) {
+  return new Intl.DateTimeFormat(undefined, {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  }).format(date);
+}
+
+function stableHash(value) {
+  let hash = 2166136261;
+  const text = String(value);
+  for (let i = 0; i < text.length; i += 1) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function entryKey(e) {
+  return norm(e.kriolu).replace(/\s+/g, ' ');
+}
+
+function betterDailyEntry(current, next) {
+  if (!current) return next;
+  const currentPrimary = /english-kriolu/i.test(current.source || '');
+  const nextPrimary = /english-kriolu/i.test(next.source || '');
+  if (nextPrimary && !currentPrimary) return next;
+  if (currentPrimary !== nextPrimary) return current;
+  return String(next.english || '').length < String(current.english || '').length ? next : current;
+}
+
+function uniqueDailyCandidates() {
+  const byWord = new Map();
+  entries.filter(isDailyCandidate).forEach((entry) => {
+    const key = entryKey(entry);
+    if (!key) return;
+    byWord.set(key, betterDailyEntry(byWord.get(key), entry));
+  });
+  return Array.from(byWord.entries()).map(([key, entry]) => ({ key, entry }));
+}
+
+function dailyChoice(candidates, date = new Date()) {
+  const size = candidates.length;
+  if (!size) return null;
+  const serial = dateSerial(date);
+  const cycle = Math.floor(serial / size);
+  const position = serial % size;
+  const seed = `kriolu-word-of-day:${cycle}:${size}`;
+  return candidates
+    .slice()
+    .sort((a, b) => stableHash(`${seed}:${a.key}`) - stableHash(`${seed}:${b.key}`) || a.key.localeCompare(b.key))[position].entry;
 }
 
 function isDailyCandidate(e) {
@@ -48,8 +103,9 @@ function isDailyCandidate(e) {
 }
 
 function renderDailyWord() {
-  const candidates = entries.filter(isDailyCandidate);
+  const candidates = uniqueDailyCandidates();
   if (!candidates.length) {
+    dailyDate.textContent = formatDailyDate();
     dailyWord.textContent = 'Unavailable';
     dailyDefinition.textContent = 'No word-of-the-day entry could be selected.';
     dailyExtra.textContent = '';
@@ -57,7 +113,8 @@ function renderDailyWord() {
     return;
   }
 
-  const entry = candidates[dayIndex(candidates.length)];
+  const entry = dailyChoice(candidates);
+  dailyDate.textContent = formatDailyDate();
   dailyWord.textContent = entry.kriolu;
   dailyDefinition.textContent = entry.english;
   dailyExtra.innerHTML = [

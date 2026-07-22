@@ -1,9 +1,9 @@
-const CACHE_NAME = 'kriolu-app-v2';
+const CACHE_NAME = 'kriolu-app-v3';
 const ASSETS = [
   '/kriolu/',
   '/kriolu/index.html',
-  '/kriolu/styles.css',
-  '/kriolu/app.js',
+  '/kriolu/styles.css?v=20260722',
+  '/kriolu/app.js?v=20260722',
   '/kriolu/dictionary.json',
   '/kriolu/manifest.webmanifest',
   '/kriolu/icons/apple-touch-icon.png',

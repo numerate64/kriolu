@@ -51,6 +51,7 @@ h1 { margin:0 0 24px; font-size:clamp(2.5rem,5vw,4rem); line-height:1; }
 .sub { color:var(--muted); max-width:780px; margin:0 0 32px; font-size:1.25rem; }
 .daily-widget { display:grid; grid-template-columns:1fr auto; align-items:end; gap:18px; background:var(--daily-bg); border:1px solid var(--daily-border); border-radius:22px; padding:22px 24px; margin:0 0 18px; box-shadow:var(--shadow); }
 .daily-widget .eyebrow { margin-bottom:8px; }
+.daily-date { color:var(--muted); font-size:14px; font-weight:800; margin-bottom:10px; }
 .daily-word { color:var(--daily-word); font-size:clamp(2rem,4vw,3.4rem); line-height:1; font-weight:900; overflow-wrap:anywhere; }
 .daily-definition { color:var(--daily-definition); margin-top:10px; font-size:18px; max-width:820px; }
 .daily-extra { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; color:var(--muted); font-size:13px; }

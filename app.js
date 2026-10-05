@@ -21,7 +21,7 @@ function setTheme(theme) {
   themeLabel.textContent = isDark ? 'Light mode' : 'Dark mode';
   themeToggle.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
   themeToggle.setAttribute('aria-pressed', String(isDark));
-  themeColor.content = isDark ? '#0f172a' : '#f5f7fb';
+  themeColor.content = isDark ? '#07182f' : '#f6f2e8';
 }
 
 function rank(e, needle) {

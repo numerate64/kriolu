@@ -3,66 +3,106 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f7fb">
+  <meta name="theme-color" content="#f6f2e8">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Kriolu">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>English → Kriolu Dictionary</title>
+  <meta name="description" content="A fast, searchable English and Cape Verdean Kriolu dictionary.">
+  <title>English ↔ Kriolu Dictionary</title>
   <script>
     (() => {
       const savedTheme = localStorage.getItem('kriolu-theme');
       const theme = savedTheme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.dataset.theme = theme;
-      document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0f172a' : '#f5f7fb';
+      document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#07182f' : '#f6f2e8';
     })();
   </script>
-  <link rel="stylesheet" href="/kriolu/styles.css?v=20260722b">
+  <link rel="stylesheet" href="/kriolu/styles.css?v=20261005">
   <link rel="manifest" href="/kriolu/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/kriolu/icons/apple-touch-icon.png">
 </head>
 <body>
-  <main class="wrap">
-    <header>
-      <div class="header-row">
-        <p class="eyebrow">Dictionary</p>
-        <div class="header-actions">
-          <a class="repo-link" href="https://github.com/numerate64/kriolu" target="_blank" rel="noopener noreferrer">GitHub repo</a>
-          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode">
-            <svg class="theme-icon theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="4"></circle>
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path>
-            </svg>
-            <svg class="theme-icon theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
-            </svg>
-            <span id="theme-label">Dark mode</span>
-          </button>
-        </div>
-      </div>
-      <h1>English ↔ Kriolu</h1>
-      <p class="sub">Search English or Kriolu terms across the English-Kriolu dictionary and <em>Disonariu Kabuverdianu</em> reference.</p>
+  <a class="skip-link" href="#dictionary-search">Skip to dictionary search</a>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="/kriolu/" aria-label="Kriolu dictionary home">
+        <span class="brand-mark" aria-hidden="true"><span>K</span></span>
+        <span>
+          <strong>Kriolu</strong>
+          <small>Dictionary</small>
+        </span>
+      </a>
+      <nav class="header-actions" aria-label="Site links">
+        <a class="utility-link" href="https://github.com/numerate64/kriolu" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.88c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.57 9.57 0 0 1 12 6.82a9.6 9.6 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+          <span>GitHub</span>
+        </a>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode">
+          <svg class="theme-icon theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg>
+          <svg class="theme-icon theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path></svg>
+          <span id="theme-label">Dark mode</span>
+        </button>
+      </nav>
     </header>
-    <section class="daily-widget" aria-labelledby="daily-title">
-      <div>
-        <p class="eyebrow" id="daily-title">Kriolu word of the day</p>
-        <div class="daily-date" id="daily-date">Today</div>
-        <div class="daily-word" id="daily-word">Loading…</div>
-        <div class="daily-definition" id="daily-definition">Choosing today's entry from the dictionary.</div>
-        <div class="daily-extra" id="daily-extra"></div>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="kicker"><span aria-hidden="true">✦</span> Words from Cabo Verde</p>
+          <h1 id="page-title">Find the words<br><em>that bring us closer.</em></h1>
+          <p class="intro">Search English and Kriolu in one place—from everyday phrases to words rooted in Cabo Verdean culture.</p>
+        </div>
+        <div class="flag-motif" aria-hidden="true"><span></span><span></span><i>✦</i><i>✦</i><i>✦</i></div>
+      </section>
+
+      <div class="content-grid">
+        <section class="search-panel" id="dictionary-search" aria-labelledby="search-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">English <span aria-hidden="true">↔</span> Kriolu</p>
+              <h2 id="search-title">What would you like to say?</h2>
+            </div>
+            <span class="book-icon" aria-hidden="true">Aa</span>
+          </div>
+          <label for="q" class="sr-only">Search English or Kriolu</label>
+          <div class="search-row">
+            <div class="input-wrap">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+              <input id="q" autocomplete="off" autofocus placeholder="Try hello, water, abakati…">
+            </div>
+            <button class="clear-button" id="clear" type="button">Clear</button>
+          </div>
+          <div class="meta"><span class="pill count-pill" id="count">Loading dictionary…</span><span class="source-note">Two trusted dictionary sources</span></div>
+          <div class="results" id="results" aria-live="polite"></div>
+        </section>
+
+        <aside class="daily-widget" aria-labelledby="daily-title">
+          <div class="daily-topline">
+            <p class="eyebrow" id="daily-title">Word of the day</p>
+            <span class="sunburst" aria-hidden="true">✺</span>
+          </div>
+          <div class="daily-date" id="daily-date">Today</div>
+          <div class="daily-word" id="daily-word">Loading…</div>
+          <div class="daily-definition" id="daily-definition">Choosing today's entry from the dictionary.</div>
+          <div class="daily-extra" id="daily-extra"></div>
+          <button class="daily-search" id="daily-search" type="button" disabled>
+            Look up this word <span aria-hidden="true">→</span>
+          </button>
+        </aside>
       </div>
-      <button class="daily-search" id="daily-search" type="button" disabled>Search word</button>
-    </section>
-    <section class="panel">
-      <label for="q" class="eyebrow">Translate a word</label>
-      <div class="search-row">
-        <input id="q" autocomplete="off" autofocus placeholder="Try: hello, water, abakati, zanga…">
-        <button id="clear" type="button">Clear</button>
-      </div>
-      <div class="meta"><span class="pill" id="count">Loading dictionary…</span><span class="pill">Sources: English-Kriolu Dictionary.pdf + Disonariu Kabuverdianu (1994)</span></div>
-      <div class="results" id="results"></div>
-    </section>
-  </main>
-  <script src="/kriolu/app.js?v=20260722"></script>
+
+      <section class="source-strip" aria-label="Dictionary sources">
+        <span class="source-mark" aria-hidden="true">“</span>
+        <p>Built from the <strong>English–Kriolu Dictionary</strong> and <em>Disonariu Kabuverdianu</em> (1994).</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Made with care for Kriolu speakers and learners.</p>
+      <span>Kabu Verdi · Cabo Verde</span>
+    </footer>
+  </div>
+  <script src="/kriolu/app.js?v=20261005"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/kriolu/service-worker.js', { scope: '/kriolu/' });
